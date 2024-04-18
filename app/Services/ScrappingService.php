@@ -40,11 +40,11 @@ class ScrappingService
                 $currentLink = array_shift($linkStack);
                 $linkData = $this->fetch($currentLink);
                 $data[] = [
-                    'link'       => $currentLink,
+                    'url'       => $currentLink,
                     'content'   => $linkData['content'],
                 ];
 
-                $linksToAdd = array_diff($linkData['links'], $processedLinks);
+                $linksToAdd = array_diff($linkData['urls'], $processedLinks);
 
                 if (count($linksToAdd) > 0 && count($linkStack) < $maxStackLength) {
                     $linkStack = array_merge($linkStack, $linksToAdd);
@@ -69,7 +69,10 @@ class ScrappingService
 
         $links = $this->getFilteredLinks($html, $url);
 
-        return ['content' => $content, 'links' => $links];
+        return [
+            'content' => $content,
+            'urls'    => $links
+        ];
     }
 
     private function getHtml(string $url): string
