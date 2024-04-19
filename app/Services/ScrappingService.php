@@ -16,7 +16,9 @@ class ScrappingService
 
     public function __construct()
     {
-        $this->browser = (new BrowserFactory())->createBrowser();
+        $this->browser = (new BrowserFactory())->createBrowser([
+            'headless' => true,
+        ]);
     }
 
     public function __destruct()
@@ -139,6 +141,8 @@ class ScrappingService
         $content = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $content);
         $content = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', "", $content);
         $content = strip_tags($content);
+
+        $content = html_entity_decode($content);
 
         return preg_replace('/\s+/', ' ', $content);
     }
