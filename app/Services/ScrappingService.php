@@ -26,7 +26,7 @@ class ScrappingService
         $this->browser->close();
     }
 
-    public function fetchRecursive(string $url, int $maxExecutionTime = 100, int $maxStackLength = 100): array
+    public function fetchRecursive(string $url, int $maxExecutionTime = 2 * 60, int $maxStackLength = 100): array
     {
         $linkStack = $processedLinks = [$url];
         $data = [];
@@ -49,6 +49,8 @@ class ScrappingService
                 $linksToAdd = array_diff($linkData['urls'], $processedLinks);
 
                 if (count($linksToAdd) > 0 && count($linkStack) < $maxStackLength) {
+                    $linksToAdd = array_slice($linksToAdd, 0, $maxStackLength - count($processedLinks));
+
                     $linkStack = array_merge($linkStack, $linksToAdd);
                     $processedLinks = array_merge($processedLinks, $linksToAdd);
                 }
