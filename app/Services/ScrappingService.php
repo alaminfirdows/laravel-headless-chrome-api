@@ -142,6 +142,7 @@ class ScrappingService
         $content = preg_replace('/<footer\b[^>]*>(.*?)<\/footer>/is', "", $content);
         $content = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $content);
         $content = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', "", $content);
+        $content = str_replace('<', ' <', $content);
         $content = strip_tags($content);
 
         $content = html_entity_decode($content);
